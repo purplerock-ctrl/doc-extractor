@@ -40,11 +40,13 @@ def extract(path):
 
     for block in response.content:
         if block.type == "tool_use":
-            return Receipt.model_validate(block.input)
+            return Receipt.model_validate(block.input), response.usage
     raise ValueError("The model did not return receipt fields")
 
 if __name__ == "__main__":
     try:
-        print(extract(sys.argv[1]))
+        receipt, usage = extract(sys.argv[1])
+        print(receipt)
+        print(usage)
     except ValidationError as error:
         print("Output did not match the schema:", error)
