@@ -49,3 +49,7 @@ v7, better labeling, cheaper model, failures: doc_id,field,expected,got
 019.jpg,tax,4.18,
 019.jpg,total,73.42,
 019.jpg,currency,usd,
+
+v8 was perfect, sonnet with labeling, one label was fixed
+
+“v9 checks: X of 60 flagged, 0 real errors (all false alarms), 0 missed errors.”
