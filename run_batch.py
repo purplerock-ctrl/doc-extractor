@@ -8,6 +8,8 @@ import anthropic
 from db import connect
 from extract import extract, MEDIA_TYPES
 
+from checks import check
+
 
 def already_done(conn, doc_id, version, model):
     row = conn.execute(
@@ -61,16 +63,17 @@ def main():
             doc_id = jobs[job].name
             try:
                 receipt, usage, seconds = job.result()
+                problems = check(receipt)
                 conn.execute(
                     "INSERT INTO extractions (doc_id, prompt_version, model, vendor, date, "
-                    "subtotal, tax, total, currency, input_tokens, output_tokens, seconds) "
-                    "VALUES (?,?,?,?,?,?,?,?,?,?,?,?)",
+                    "subtotal, tax, total, currency, input_tokens, output_tokens, seconds, needs_review, review_reasons) "
+                    "VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
                     (doc_id, args.version, args.model, receipt.vendor, receipt.date,
                      receipt.subtotal, receipt.tax, receipt.total, receipt.currency,
-                     usage.input_tokens, usage.output_tokens, seconds))
+                     usage.input_tokens, usage.output_tokens, seconds, 1 if problems else 0, "; ".join(problems)))
                 conn.commit()
                 ok += 1
-                print("ok", doc_id)
+                print("ok", doc_id, "(needs review: " + "; ".join(problems) + ")" if problems else "")
             except Exception as error:
                 conn.execute("INSERT INTO errors (doc_id, message) VALUES (?, ?)",
                              (doc_id, str(error)))

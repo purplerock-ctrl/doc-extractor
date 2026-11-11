@@ -6,6 +6,7 @@ def connect():
         doc_id TEXT, prompt_version TEXT, model TEXT,
         vendor TEXT, date TEXT, subtotal REAL, tax REAL, total REAL, currency TEXT,
         input_tokens INTEGER, output_tokens INTEGER, seconds REAL,
+        needs_review INTEGER, review_reaons TEXT,
         created_at TEXT DEFAULT CURRENT_TIMESTAMP,
         PRIMARY KEY (doc_id, prompt_version, model))""")
     conn.execute("""CREATE TABLE IF NOT EXISTS errors (
