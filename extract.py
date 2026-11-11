@@ -10,7 +10,7 @@ from schema import Receipt
 
 load_dotenv()
 client = anthropic.Anthropic()
-MODEL = "claude-haiku-5-5"  # copy a current model name from the docs
+MODEL = "claude-sonnet-5-5"  # copy a current model name from the docs
 
 MEDIA_TYPES = {".pdf": "application/pdf", ".jpg": "image/jpeg",
                ".jpeg": "image/jpeg", ".png": "image/png"}
