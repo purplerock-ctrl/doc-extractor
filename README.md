@@ -2,9 +2,9 @@
 
 Upload a receipt or invoice (PDF or photo) and get clean, structured data back: vendor, date, subtotal, tax, total and currency. Results that look doubtful are flagged for human review.
 
-**[Live demo](PASTE-YOUR-APP-LINK-HERE)** (password protected to control API costs)
+**[Live demo](https://doc-extractor-dt7wzerufh3afosxr78ske.streamlit.app/)** (password protected to control API costs)
 
-![Screenshot of the app](screenshot.png)
+![Screenshot of the app](receipt-extractor.png)
 
 ## How it works
 
