@@ -15,7 +15,7 @@ MODEL = "claude-haiku-5-5"  # copy a current model name from the docs
 MEDIA_TYPES = {".pdf": "application/pdf", ".jpg": "image/jpeg",
                ".jpeg": "image/jpeg", ".png": "image/png"}
 
-def extract(path):
+def extract(path, model=MODEL):
     path = Path(path)
     media_type = MEDIA_TYPES[path.suffix.lower()]
     data = base64.standard_b64encode(path.read_bytes()).decode("utf-8")
@@ -25,15 +25,16 @@ def extract(path):
                   "source": {"type": "base64", "media_type": media_type, "data": data}}
 
     response = client.messages.create(
-        model=MODEL,
+        model=model,
         max_tokens=1000,
         tools=[{"name": "save_receipt",
                 "description": "Save the fields read from the receipt.",
                 "input_schema": Receipt.model_json_schema()}],
-        tool_choice={"type": "tool", "name": "save_receipt"},
+        tool_choice={"type": "auto"},
         messages=[{"role": "user", "content": [
             file_block,
-            {"type": "text", "text": "Extract the receipt fields. "
+            {"type": "text", "text": "Extract the receipt fields and save them "
+                                     "by calling the save_receipt tool. "
                                      "Use null for anything not shown. Never guess."},
         ]}],
     )
